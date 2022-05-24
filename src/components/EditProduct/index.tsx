@@ -34,7 +34,7 @@ const EditProduct = () => {
                     type="url"
                     placeholder="Imagem"
                 />
-                <S.Delete>Deletear</S.Delete>
+                <S.Delete>Deletar</S.Delete>
             </S.EditFormGroup>
         </S.EditProduct>
     );

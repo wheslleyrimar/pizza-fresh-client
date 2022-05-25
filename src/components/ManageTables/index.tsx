@@ -1,6 +1,7 @@
 import { HTMLAttributes } from "react";
 import { ReactComponent as Add } from "assets/icons/add.svg";
 import * as S from "./style";
+import EditTable from "components/EditTable";
 
 type ManageTablesType = HTMLAttributes<HTMLDivElement>;
 
@@ -27,7 +28,7 @@ const ManageTables = ({...props}:ManageTablesProps) => {
                     placeholder="01"
                   />
               </S.ManageTablesContentAdd>
-              {"Componente EditTable"}
+              <EditTable />
           </S.ManageTablesContent>
           <S.ManageTablesActions>
                 <S.ManageTablesActionsCancel>Cancelar</S.ManageTablesActionsCancel>

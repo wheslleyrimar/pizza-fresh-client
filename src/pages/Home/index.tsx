@@ -11,14 +11,33 @@ import Overlay from "components/Overlay";
 import CheckoutSection from "components/CheckoutSection";
 import { useNavigate } from "react-router-dom";
 import { products } from 'mocks/products';
-import { orders } from 'mocks/orders';
+//import { orders } from 'mocks/orders';
 import { ProductResponse } from "types/Product";
+import { OrderType } from 'types/orderType';
+import { useState } from "react";
+import { OrderItemType } from "types/OrderItemType";
 
 const Home = () => {
     const dateDescription = DateTime.now().toLocaleString({...DateTime.DATE_SHORT, weekday: 'long'});
     const navigate = useNavigate();
+
+    const [activeOrderType, setActiverOrderType] = useState(
+        OrderType.COMER_NO_LOCAL
+    );
+
+    const [orders, setOrders] = useState<OrderItemType[]>([]);
     const handleNavigation = (path: RoutePath) => navigate(path);
-    const handleSelection = (product: ProductResponse) => {}
+    
+    const handleSelection = (product: ProductResponse) => {
+        const existing = orders.find((i) => i.product.id === product.id);
+        const quantity = existing ? existing.quantity + 1 : 1;
+        const item: OrderItemType = {product, quantity};
+
+        const list = existing
+        ? orders.map((i) => (i.product.id === existing.product.id ? item : i))
+        : [...orders, item];
+        setOrders(list);
+    }
 
     return (
         <S.Home>
@@ -61,7 +80,9 @@ const Home = () => {
             </S.HomeContent>
             <aside>
                 <OrderDetails
-                    orders={orders} />
+                    orders={orders}
+                    onChangeActiveOrderType={(data)=> setActiverOrderType(data)}
+                    activeOrderType={activeOrderType} />
             </aside>
             {/* <Overlay>
                 <CheckoutSection />

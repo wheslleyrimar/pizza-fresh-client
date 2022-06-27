@@ -11,6 +11,7 @@ type OrderDetailsType = HTMLAttributes<HTMLDivElement>;
 
 type OrderDetailsProps = {
     orders: OrderItemType[];
+    onProceedToPayment: () => void;
     onOrdersChange: (orders: OrderItemType[]) => void;
     onChangeActiveOrderType: (data: OrderType) => void;
     onRemoveItem: (id: string) => void;
@@ -19,6 +20,7 @@ type OrderDetailsProps = {
 
 const OrderDetails = ({
     orders,
+    onProceedToPayment,
     onOrdersChange,
     onChangeActiveOrderType,
     onRemoveItem,
@@ -80,7 +82,9 @@ const OrderDetails = ({
                                 <span>Subtotal</span>
                                 <span>R$ {priceState.toFixed(2)}</span>
                             </S.OrderDetailsListFooterRow>
-                            <ButtonLarge value="Continue para o pagamento" />
+                            <ButtonLarge
+                                onClick={onProceedToPayment}
+                                value="Continue para o pagamento" />
                         </S.OrderDetailsListFooter>
                     }
                 />

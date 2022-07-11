@@ -2,7 +2,7 @@ export interface Table {
     number: number;
 }
 
-export interface TableReponse {
+export interface TableResponse {
     id: string;
     number: number;
     updatedAt?: string;

@@ -10,17 +10,24 @@ import OrderDetails from "components/OrderDetails";
 import Overlay from "components/Overlay";
 import CheckoutSection from "components/CheckoutSection";
 import { useNavigate } from "react-router-dom";
-import { products } from 'mocks/products';
-//import { orders } from 'mocks/orders';
 import { ProductResponse } from "types/Product";
 import { OrderType } from 'types/orderType';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { OrderItemType } from "types/OrderItemType";
+import { useQuery } from "react-query";
+import { QueryKey } from "types/QueryKey";
+import { ProductService } from "services/ProductService";
 
 const Home = () => {
     const dateDescription = DateTime.now().toLocaleString({...DateTime.DATE_SHORT, weekday: 'long'});
     const navigate = useNavigate();
 
+    const {data: productsData} = useQuery(
+        QueryKey.PRODUCTS,
+        ProductService.getLista
+    );
+
+    const [products, setProducts] = useState<ProductResponse[]>([]);
     const [activeOrderType, setActiverOrderType] = useState(
         OrderType.COMER_NO_LOCAL
     );
@@ -45,6 +52,10 @@ const Home = () => {
         const filtered = orders.filter((i) => i.product.id !== id);
         setOrders(filtered);
     }
+
+    useEffect(() => {
+        setProducts(productsData || []);
+    },[productsData]);
 
     return (
         <S.Home>

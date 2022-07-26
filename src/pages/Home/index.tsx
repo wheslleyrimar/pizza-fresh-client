@@ -18,6 +18,7 @@ import { useQuery } from "react-query";
 import { QueryKey } from "types/QueryKey";
 import { ProductService } from "services/ProductService";
 import { TableService } from "services/TableService";
+import { Auth } from "helpers/Auth";
 
 const Home = () => {
     const dateDescription = DateTime.now().toLocaleString({...DateTime.DATE_SHORT, weekday: 'long'});
@@ -71,7 +72,7 @@ const Home = () => {
                 active={RoutePath.HOME}
                 navItems={navigationItems}
                 onNavigate={handleNavigation}
-                onLogout={() => navigate(RoutePath.LOGIN)}
+                onLogout={Auth.logout}
             />
             <S.HomeContent>
                 <header>

@@ -10,7 +10,7 @@ import OrderDetails from "components/OrderDetails";
 import Overlay from "components/Overlay";
 import CheckoutSection from "components/CheckoutSection";
 import { useNavigate } from "react-router-dom";
-import { ProductResponse } from "types/Product";
+import { ProductResponse } from "types/api/product";
 import { OrderType } from 'types/orderType';
 import { useEffect, useState } from "react";
 import { OrderItemType } from "types/OrderItemType";
@@ -19,6 +19,7 @@ import { QueryKey } from "types/QueryKey";
 import { ProductService } from "services/ProductService";
 import { TableService } from "services/TableService";
 import { Auth } from "helpers/Auth";
+import { matchByText } from "helpers/Utils";
 
 const Home = () => {
     const dateDescription = DateTime.now().toLocaleString({...DateTime.DATE_SHORT, weekday: 'long'});
@@ -44,6 +45,9 @@ const Home = () => {
     const [orders, setOrders] = useState<OrderItemType[]>([]);
     const [selectedTable, setSelectedTable] = useState<number | undefined>();
     const [proceedToPayment, setProceedToPayment] = useState<boolean>(false);
+
+    const [filteredProducts, setFilteredProducts] = useState<ProductResponse[]>([]);
+
     const handleNavigation = (path: RoutePath) => navigate(path);
     
     const handleSelection = (product: ProductResponse) => {
@@ -62,8 +66,14 @@ const Home = () => {
         setOrders(filtered);
     }
 
+    const handleFilter = (title: string) => {
+        const list = products.filter(({name}) => matchByText(name, title));
+        setFilteredProducts(list);
+    }
+
     useEffect(() => {
         setProducts(productsData || []);
+        setFilteredProducts(productsData || []);
     },[productsData]);
 
     return (
@@ -83,7 +93,10 @@ const Home = () => {
                         </div>
                         <S.HomeHeaderDetailsSearch>
                             <Search />
-                            <input type="text" placeholder="Procure pelo sabor"/>
+                            <input
+                                type="text"
+                                placeholder="Procure pelo sabor"
+                                onChange={({target}) => handleFilter(target.value)}/>
                         </S.HomeHeaderDetailsSearch>
                     </S.HomeHeaderDetails>
                 </header>
@@ -94,7 +107,7 @@ const Home = () => {
                     <S.HomeProductList>
                         <ProductItemList tables={tables} onSelectTable={setSelectedTable}>
                             {Boolean(products.length) &&
-                            products.map((product, index) =>(
+                            filteredProducts.map((product, index) =>(
                             <ProductItem
                                 product={product}
                                 key={`ProductItem-${index}`}

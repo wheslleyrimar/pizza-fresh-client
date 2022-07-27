@@ -1,4 +1,4 @@
-import { ProductResponse } from "./Product";
+import { ProductResponse } from "types/api/product";
 
 export interface OrderItemType {
 	product: ProductResponse;

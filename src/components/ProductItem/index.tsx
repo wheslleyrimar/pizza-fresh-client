@@ -1,5 +1,5 @@
 import * as S from "./style";
-import { ProductResponse } from "types/Product";
+import { ProductResponse } from "types/api/product";
 
 type ProductItemProps = {
     product: ProductResponse
